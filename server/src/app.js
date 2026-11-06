@@ -43,10 +43,10 @@ app.use("/api/orders", orderRoutes);
 // Centralized error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, "0.0.0.0", async () => {
+  console.log(`Server running on http://localhost:${PORT}`);
   try {
     const connection = await db.getConnection();
     console.log("Connected to MySQL database successfully!");
