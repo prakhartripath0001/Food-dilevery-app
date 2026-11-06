@@ -1,4 +1,4 @@
--- Create database if not exists (handled by Docker MYSQL_DATABASE, but ensures safety)
+
 CREATE DATABASE IF NOT EXISTS food_delivery_db;
 USE food_delivery_db;
 
@@ -91,22 +91,3 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE RESTRICT
 );
-
--- Seed Categories
-INSERT IGNORE INTO categories (id, name, image_url) VALUES
-(1, 'Pizza', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400'),
-(2, 'Burgers', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'),
-(3, 'Indian', 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400'),
-(4, 'Desserts', 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400');
-
--- Seed Sample Restaurant
-INSERT IGNORE INTO restaurants (id, name, description, address, phone, rating, is_open) VALUES
-(1, 'Pizza Palace', 'Authentic stone-baked Italian pizzas & pastas', '123 Main Street', '+1234567890', 4.8, TRUE),
-(2, 'Burger Barn', 'Gourmet smashed burgers, fries and shakes', '456 Market Avenue', '+1234567891', 4.6, TRUE);
-
--- Seed Sample Menu Items
-INSERT IGNORE INTO menu_items (restaurant_id, category_id, name, description, price, is_available) VALUES
-(1, 1, 'Margherita Pizza', 'Classic tomato sauce, fresh mozzarella, and basil', 12.99, TRUE),
-(1, 1, 'Pepperoni Feast', 'Double pepperoni with extra mozzarella cheese', 15.49, TRUE),
-(2, 2, 'Classic Cheeseburger', 'Angus beef patty, cheddar, lettuce, tomato & special sauce', 9.99, TRUE),
-(2, 2, 'Truffle Fries', 'Crispy fries tossed with truffle oil and parmesan', 5.99, TRUE);
