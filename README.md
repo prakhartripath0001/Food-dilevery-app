@@ -13,7 +13,8 @@ A full-stack food delivery application featuring:
 Food-dilvery-app/
 ├── database/               # SQL scripts (auto-run by Docker in alphabetical order)
 │   ├── 01-schema.sql       # Table definitions (users, restaurants, orders, etc.)
-│   └── 02-seed.sql         # Sample seed data (categories, restaurants, menu items)
+│   ├── 02-seed.sql         # Sample seed data (categories, restaurants, menu items)
+│   └── 03-address-details.sql # Extends addresses with recipient and location details
 ├── infra/                  # Infrastructure & Docker setup
 │   └── docker-compose.yml  # MySQL 8.0 container service
 ├── server/                 # Express REST API backend
@@ -55,6 +56,14 @@ Start the MySQL container with automatic schema and seed data initialization:
 cd infra
 docker compose up -d
 ```
+
+The SQL initialization scripts run automatically only when MySQL creates a new
+data volume. For an existing database, apply
+`database/03-address-details.sql` once to add address type, recipient, phone,
+landmark, and GPS coordinate fields to the existing `addresses` table.
+`address_line1` and `postal_code` remain the stored street address and postal
+code, respectively; the table stays named `addresses` because orders already
+reference it.
 
 > **Database Details:**
 > - **Host Port**: `3307` *(mapped to container's internal 3306 to avoid port 3306 conflicts)*
