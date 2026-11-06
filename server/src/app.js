@@ -9,6 +9,8 @@ const errorHandler = require("./middlewares/error.middleware");
 const categoryRoutes = require("./routes/category.routes");
 const restaurantRoutes = require("./routes/restaurant.routes");
 const orderRoutes = require("./routes/order.routes");
+const authRoutes = require("./routes/auth.routes");
+const addressRoutes = require("./routes/address.routes");
 
 const app = express();
 
@@ -46,6 +48,8 @@ app.get("/health", async (req, res) => {
 app.use("/api/categories", categoryRoutes);
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/addresses", addressRoutes);
 
 // Centralized error handler
 app.use(errorHandler);

@@ -89,8 +89,11 @@ cd server
    DB_USER=food_user
    DB_PASSWORD=food_password
    DB_NAME=food_delivery_db
+   JWT_SECRET=<a-random-secret-at-least-32-characters>
    ```
    *(If creating manually, copy from example: `cp .env.example .env`)*
+   Generate a JWT secret, for example with `openssl rand -base64 32`, and set
+   it as `JWT_SECRET`. Do not commit the generated secret.
 
 2. **(Optional) Test database connection**:
    ```bash
@@ -129,7 +132,10 @@ cd client_app
    flutter run
    ```
 
-Tap the **"Test API Connection"** button in the app to verify Flutter connects to Express.
+Tap the location header to sign in or create an account, then choose a saved
+address, search for a place, use the device's current location, or add an
+address manually. The app asks for location permission only when current
+location is requested. It stores the bearer token in secure device storage.
 
 ---
 
@@ -146,6 +152,12 @@ On **macOS (Monterey and newer)**, port `5000` is reserved by default by the nat
 | **Flutter Web / macOS** | `http://localhost:5001` | Runs on the host directly. |
 | **Physical Phone** | `http://<YOUR_LOCAL_IP>:5001` | Use your computer's Wi-Fi IP (e.g. `192.168.1.5:5001`). Both devices must be on the same Wi-Fi. |
 
+For a physical phone, configure the client to use your computer's Wi-Fi address:
+
+```bash
+flutter run --dart-define=API_BASE_URL=http://<YOUR_LOCAL_IP>:5001
+```
+
 ---
 
 ## Available API Endpoints
@@ -157,8 +169,23 @@ On **macOS (Monterey and newer)**, port `5000` is reserved by default by the nat
 | `GET` | `/api/categories` | List all food categories |
 | `GET` | `/api/restaurants` | List restaurants (supports `?search=query`) |
 | `GET` | `/api/restaurants/:id` | Get restaurant details and full menu items |
+| `POST` | `/api/auth/register` | Register and receive a bearer token |
+| `POST` | `/api/auth/login` | Log in and receive a bearer token |
+| `POST` | `/api/addresses` | Save an address (requires bearer token) |
+| `GET` | `/api/addresses` | List the signed-in user's addresses |
+| `GET` | `/api/addresses/:id` | Get one of the signed-in user's addresses |
+| `PUT` | `/api/addresses/:id` | Replace one of the signed-in user's addresses |
+| `DELETE` | `/api/addresses/:id` | Delete one of the signed-in user's addresses |
+| `PATCH` | `/api/addresses/:id/default` | Set a saved address as default |
 | `POST` | `/api/orders` | Place a new order with atomic DB transaction |
 | `GET` | `/api/orders/:id` | Get order details and ordered items |
+
+Address requests require `Authorization: Bearer <token>`. The server derives
+the owner from the token; any `user_id` included in the request body is ignored.
+Register and login accept `{ "name", "email", "password" }` (name is required
+for registration) and return the token under `data.token`. Address fields use
+camelCase (`addressType`, `recipientName`, `addressLine`, `landmark`, `city`,
+`state`, `pincode`, `latitude`, `longitude`).
 
 ---
 
