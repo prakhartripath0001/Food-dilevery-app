@@ -175,6 +175,7 @@ async function updateAddress(req, res, next) {
       `${addressSelect} WHERE id = ? AND user_id = ?`,
       [addressId, req.user.id]
     );
+    if (addresses.length === 0) return fail(res, 404, "Address not found");
     return res.json({
       success: true,
       message: "Address updated successfully",

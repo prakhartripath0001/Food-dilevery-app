@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _geocoding = Geocoding();
+  late final _geocoding = Geocoding();
 
   List<Map<String, dynamic>> _categories = [];
   List<Map<String, dynamic>> _restaurants = [];
