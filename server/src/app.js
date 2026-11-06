@@ -20,6 +20,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Backend is running!" });
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Flutter connected to Express!"
+  });
+});
+
 app.get("/health", async (req, res) => {
   try {
     await db.query("SELECT 1");
